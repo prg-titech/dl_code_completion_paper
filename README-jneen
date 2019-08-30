@@ -1,0 +1,17 @@
+put this in .latexmkrc in the *project* directory (not in your home directory):
+
+=== begin ===
+$latex = 'platex -synctex=1 %O %S';
+$bibtex = 'pbibtex %O %B';
+$dvipdf = 'dvipdfmx %O -o %D %S';
+=== end ===
+
+then run:
+
+$ latexmk -pdfdvi thefile.tex
+
+add options:
+
+-gg  : to clean and remake
+-pvc : to keep dynamically building as you save the file
+

@@ -1,0 +1,82 @@
+\relax 
+\citation{dataset}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}\protected@file@percent }
+\citation{hindle2012naturalness}
+\citation{DBLP:journals/corr/MaddisonT14}
+\citation{Nguyen:2013:SSL:2491411.2491458}
+\citation{allamanis2014mining}
+\citation{liang2010learning}
+\citation{bielik2016phog}
+\citation{raychev2016probabilistic}
+\citation{raychev2014code}
+\citation{white2015toward}
+\citation{liu2016neural}
+\citation{word2vec}
+\newlabel{fig:overivew_model}{{1}{2}}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Background}{2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3}Abstract Syntax Tree}{2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4}ASTToken2Vec Embedding}{3}\protected@file@percent }
+\newlabel{section:node2vec}{{4}{3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.\,1}Model Architecture}{3}\protected@file@percent }
+\newlabel{fig:node2vec-structure}{{2}{3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.\,2}Embedding for Non-terminals}{3}\protected@file@percent }
+\newlabel{sub:embedding_nt}{{4.\,2}{3}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.\,2.\,1}Non-terminal context}{3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.\,2.\,2}Terminal context}{3}\protected@file@percent }
+\newlabel{fig:node2vec-context}{{3}{4}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.\,3}Embedding for Terminals}{4}\protected@file@percent }
+\newlabel{sub:embedding_tt}{{4.\,3}{4}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.\,3.\,1}Non-terminal context}{4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.\,3.\,2}Terminal context}{4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.\,4}Joint Loss Function}{4}\protected@file@percent }
+\newlabel{equ:lossnt}{{1}{4}}
+\newlabel{equ:losstt}{{2}{4}}
+\newlabel{equ:totalloss}{{3}{5}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}AT2V-LSTM Integration}{5}\protected@file@percent }
+\newlabel{section:n2v-lstm-integration}{{5}{5}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.\,1}Sequences of Training Samples}{5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.\,2}Model Architecture}{5}\protected@file@percent }
+\newlabel{fig:nti2p_model_architecture}{{4}{5}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.\,2.\,1}Input layer}{5}\protected@file@percent }
+\newlabel{equ:input}{{4}{5}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.\,2.\,2}LSTM layer}{5}\protected@file@percent }
+\citation{dataset}
+\citation{liu2016neural}
+\citation{dataset}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.\,2.\,3}Output layer}{6}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {6}Experiments}{6}\protected@file@percent }
+\newlabel{section:experiment}{{6}{6}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.\,1}Dataset Details}{6}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.\,1.\,1}Non-terminal Vocabulary}{6}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.\,1.\,2}Terminal Vocabulary}{6}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.\,2}Experiment of ASTToken2Vec}{6}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.\,2.\,1}Training details}{6}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.\,2.\,2}Visualization}{6}\protected@file@percent }
+\newlabel{fig:node2vec_visualization}{{5}{7}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.\,3}Experiment of AT2V-LSTM}{7}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.\,3.\,1}Training details}{7}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.\,3.\,2}Next Non-terminal Prediction}{7}\protected@file@percent }
+\newlabel{table:non-terminal-evalution-accuracy}{{1}{7}}
+\newlabel{fig:valid_accuracy_for_non_terminal}{{6}{7}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.\,3.\,3}Next Terminal Prediction}{7}\protected@file@percent }
+\newlabel{fig:valid_accuracy_for_terminal}{{7}{7}}
+\bibstyle{jssst}
+\bibdata{references}
+\bibcite{allamanis2014mining}{1}
+\bibcite{bielik2016phog}{2}
+\bibcite{hindle2012naturalness}{3}
+\bibcite{liang2010learning}{4}
+\bibcite{liu2016neural}{5}
+\bibcite{DBLP:journals/corr/MaddisonT14}{6}
+\newlabel{table:terminal-evalution-accuracy}{{2}{8}}
+\newlabel{table:node-information-evaluation-accuracy}{{3}{8}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.\,3.\,4}Next Token Information Prediction}{8}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.\,3.\,5}Uncommon terminal repeation}{8}\protected@file@percent }
+\newlabel{fig:code_snippets_compare}{{8}{8}}
+\@writefile{toc}{\contentsline {section}{\numberline {7}Conclusion}{8}\protected@file@percent }
+\bibcite{word2vec}{7}
+\bibcite{Nguyen:2013:SSL:2491411.2491458}{8}
+\bibcite{raychev2016probabilistic}{9}
+\bibcite{dataset}{10}
+\bibcite{raychev2014code}{11}
+\bibcite{white2015toward}{12}

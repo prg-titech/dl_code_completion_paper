@@ -1,0 +1,57 @@
+This is pBibTeX, Version 0.99d-j0.33 (utf8.euc) (TeX Live 2019)
+Capacity: max_strings=100000, hash_size=100000, hash_prime=85009
+The top-level auxiliary file: MyPaper.aux
+The style file: jssst.bst
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Database file #1: references.bib
+Warning--Missing required argument journal in liu2016neural
+Warning--there's no number and/or volumeliu2016neural
+Warning--Missing required argument pages in liu2016neural
+Warning--Missing required argument pages in DBLP:journals/corr/MaddisonT14
+Warning--Missing required argument pages in word2vec
+Warning--there's a series but neither volume nor number in Nguyen:2013:SSL:2491411.2491458
+Warning--you can use only one of volume and number in raychev2016probabilistic
+Warning--you can use only one of volume and number in raychev2014code
+You've used 12 entries,
+            2588 wiz_defined-function locations,
+            647 strings with 6747 characters,
+and the built_in function-call counts, 5635 in all, are:
+= -- 473
+> -- 317
+< -- 20
++ -- 99
+- -- 86
+* -- 414
+:= -- 767
+add.period$ -- 12
+call.type$ -- 12
+change.case$ -- 67
+chr.to.int$ -- 66
+cite$ -- 20
+duplicate$ -- 196
+empty$ -- 439
+format.name$ -- 129
+if$ -- 1223
+int.to.chr$ -- 0
+int.to.str$ -- 12
+missing$ -- 12
+newline$ -- 39
+num.names$ -- 24
+pop$ -- 77
+preamble$ -- 1
+purify$ -- 133
+quote$ -- 0
+skip$ -- 263
+stack$ -- 0
+substring$ -- 350
+swap$ -- 85
+text.length$ -- 8
+text.prefix$ -- 66
+top$ -- 0
+type$ -- 48
+warning$ -- 8
+while$ -- 50
+width$ -- 14
+write$ -- 105
+is.kanji.str$ -- 0
+(There were 8 warnings)

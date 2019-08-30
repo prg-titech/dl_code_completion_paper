@@ -1,0 +1,60 @@
+\begin{thebibliography}{10}
+
+\bibitem{allamanis2014mining}
+Allamanis, M. and Sutton, C.: Mining idioms from source code,  {\it Proceedings
+  of the 22nd ACM SIGSOFT International Symposium on Foundations of Software
+  Engineering}, ACM, 2014, pp.~ 472--483.
+
+\bibitem{bielik2016phog}
+Bielik, P., Raychev, V., and Vechev, M.: PHOG: probabilistic model for code,
+  {\it International Conference on Machine Learning}, 2016, pp.~ 2933--2942.
+
+\bibitem{hindle2012naturalness}
+Hindle, A., Barr, E.~T., Su, Z., Gabel, M., and Devanbu, P.: On the naturalness
+  of software,  {\it 2012 34th International Conference on Software Engineering
+  (ICSE)}, IEEE, 2012, pp.~ 837--847.
+
+\bibitem{liang2010learning}
+Liang, P., Jordan, M.~I., and Klein, D.: Learning programs: A hierarchical
+  Bayesian approach,  {\it Proceedings of the 27th International Conference on
+  Machine Learning (ICML-10)}, 2010, pp.~ 639--646.
+
+\bibitem{liu2016neural}
+Liu, C., Wang, X., Shin, R., Gonzalez, J.~E., and Song, D.: Neural code
+  completion, (2016).
+
+\bibitem{DBLP:journals/corr/MaddisonT14}
+Maddison, C.~J. and Tarlow, D.: Structured Generative Models of Natural Source
+  Code, {\it CoRR}, Vol.~abs/1401.0514(2014).
+
+\bibitem{word2vec}
+Mikolov, T., Sutskever, I., Chen, K., Corrado, G., and Dean, J.: Distributed
+  Representations of Words and Phrases and their Compositionality, {\it CoRR},
+  Vol.~abs/1310.4546(2013).
+
+\bibitem{Nguyen:2013:SSL:2491411.2491458}
+Nguyen, T.~T., Nguyen, A.~T., Nguyen, H.~A., and Nguyen, T.~N.: A Statistical
+  Semantic Language Model for Source Code,  {\it Proceedings of the 2013 9th
+  Joint Meeting on Foundations of Software Engineering}, ESEC/FSE 2013, New
+  York, NY, USA, ACM, 2013, pp.~ 532--542.
+
+\bibitem{raychev2016probabilistic}
+Raychev, V., Bielik, P., and Vechev, M.: Probabilistic model for code with
+  decision trees,  {\it ACM SIGPLAN Notices}, Vol.~51, No.~10, ACM, 2016, pp.~
+  731--747.
+
+\bibitem{dataset}
+Raychev, V., Bielik, P., Vechev, M., and Krause, A.: Learning Programs from
+  Noisy Data, {\it SIGPLAN Not.}, Vol.~51, No.~1(2016), pp.~761--774.
+
+\bibitem{raychev2014code}
+Raychev, V., Vechev, M., and Yahav, E.: Code completion with statistical
+  language models,  {\it Acm Sigplan Notices}, Vol.~49, No.~6, ACM, 2014, pp.~
+  419--428.
+
+\bibitem{white2015toward}
+White, M., Vendome, C., Linares-V{\'a}squez, M., and Poshyvanyk, D.: Toward
+  deep learning software repositories,  {\it Proceedings of the 12th Working
+  Conference on Mining Software Repositories}, IEEE Press, 2015, pp.~ 334--345.
+
+\end{thebibliography}

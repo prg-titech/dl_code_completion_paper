@@ -1,0 +1,223 @@
+This is e-pTeX, Version 3.14159265-p3.8.2-190131-2.6 (utf8.euc) (TeX Live 2019) (preloaded format=platex 2019.7.23)  5 AUG 2019 22:21
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**MyPaper.tex
+(./MyPaper.tex
+pLaTeX2e <2019-04-06> (based on LaTeX2e <2018-12-01>)
+(./compsoft.cls
+Document Class: compsoft 2000/11/02 ver 0.10
+(./compsoft.sty
+Document Style `compsoft' ascii version <23 Mar 92>.
+\@maxsep=\dimen118
+\@dblmaxsep=\dimen119
+\JQ=\dimen120
+\Q=\dimen121
+\@Baseline=\dimen122
+\jspaceskip=\dimen123
+\jmathkanjiskip=\dimen124
+\@mojihaba=\dimen125
+\c@part=\count83
+\c@section=\count84
+\c@subsection=\count85
+\c@subsubsection=\count86
+\c@paragraph=\count87
+\c@subparagraph=\count88
+\@currentmojihaba=\skip41
+\twodigits=\skip42
+\bibbox=\box43
+\@beforecaptionskip=\skip43
+\@aftercaptionskip=\skip44
+\@tempboxb=\box44
+\c@figure=\count89
+\c@table=\count90
+\@floatheight=\dimen126
+\@floatlinecount=\count91
+\@temptitlebox=\box45
+\strokeinterval=\dimen127
+\strokewidth=\dimen128
+\rightstrokewidth=\dimen129
+\boxinterval=\dimen130
+\boxwidth=\dimen131
+\leftboxwidth=\dimen132
+\choshaspacebox=\box46
+\tempsplitbox=\box47
+\nobreakcount=\count92
+\c@volpageoffset=\count93
+\c@巻数=\count94
+\c@号数=\count95
+\c@年数=\count96
+\c@firstpage=\count97
+\c@lastpage=\count98
+\dimen@@=\dimen133
+\@interlinegap=\skip45
+\@leftcolumnfootnote=\box48
+\@rightcolumnfootnote=\box49
+\adjustbox=\box50
+\adjustheight=\dimen134
+\adjustlinecount=\count99
+))
+\currentYear=\count100
+\currentKai=\count101
+ (/usr/local/texlive/2019/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 2017/06/01 v1.1a Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/texlive/2019/texmf-dist/tex/latex/graphics/keyval.sty
+Package: keyval 2014/10/28 v1.15 key=value parser (DPC)
+\KV@toks@=\toks15
+)
+(/usr/local/texlive/2019/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2017/06/25 v1.2c Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/local/texlive/2019/texmf-dist/tex/latex/graphics/trig.sty
+Package: trig 2016/01/03 v1.10 sin cos tan (DPC)
+)
+(/usr/local/texlive/2019/texmf-dist/tex/latex/graphics-cfg/graphics.cfg
+File: graphics.cfg 2016/06/04 v1.11 sample graphics configuration
+)
+Package graphics Info: Driver file: dvipdfmx.def on input line 99.
+
+(/usr/local/texlive/2019/texmf-dist/tex/latex/graphics-def/dvipdfmx.def
+File: dvipdfmx.def 2017/06/24 v5.0g Graphics/color driver for dvipdfmx
+))
+\Gin@req@height=\dimen135
+\Gin@req@width=\dimen136
+)
+(./MyPaper.aux)
+\openout1 = `MyPaper.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 12.
+LaTeX Font Info:    ... okay on input line 12.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 12.
+LaTeX Font Info:    ... okay on input line 12.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 12.
+LaTeX Font Info:    ... okay on input line 12.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 12.
+LaTeX Font Info:    ... okay on input line 12.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 12.
+LaTeX Font Info:    ... okay on input line 12.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 12.
+LaTeX Font Info:    ... okay on input line 12.
+LaTeX Font Info:    Checking defaults for JY1/mc/m/n on input line 12.
+LaTeX Font Info:    ... okay on input line 12.
+LaTeX Font Info:    Checking defaults for JT1/mc/m/n on input line 12.
+LaTeX Font Info:    ... okay on input line 12.
+LaTeX Font Info:    Font shape `JT1/gt/bx/n' in size <8> not available
+(Font)              Font shape `JT1/gt/m/n' tried instead on input line 34.
+LaTeX Font Info:    Font shape `JY1/gt/bx/n' in size <8> not available
+(Font)              Font shape `JY1/gt/m/n' tried instead on input line 34.
+LaTeX Font Info:    Font shape `JT1/gt/bx/n' in size <17.28> not available
+(Font)              Font shape `JT1/gt/m/n' tried instead on input line 34.
+LaTeX Font Info:    Font shape `JY1/gt/bx/n' in size <17.28> not available
+(Font)              Font shape `JY1/gt/m/n' tried instead on input line 34.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <14.4> on input line 34.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 34.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <8> on input line 34.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 34.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 34.
+LaTeX Font Info:    Font shape `JT1/gt/bx/n' in size <10> not available
+(Font)              Font shape `JT1/gt/m/n' tried instead on input line 42.
+LaTeX Font Info:    Font shape `JY1/gt/bx/n' in size <10> not available
+(Font)              Font shape `JY1/gt/m/n' tried instead on input line 42.
+File: pictures/model_overview.png Graphic file (type bmp)
+<pictures/model_overview.png>
+
+Overfull \hbox (8.8914pt too wide) in paragraph at lines 69--70
+ [][] 
+ []
+
+[1
+
+
+]
+LaTeX Font Info:    Font shape `JT1/mc/m/it' in size <9> not available
+(Font)              Font shape `JT1/mc/m/n' tried instead on input line 82.
+LaTeX Font Info:    Font shape `JY1/mc/m/it' in size <9> not available
+(Font)              Font shape `JY1/mc/m/n' tried instead on input line 82.
+ [2]
+LaTeX Font Info:    Font shape `JT1/gt/bx/n' in size <9> not available
+(Font)              Font shape `JT1/gt/m/n' tried instead on input line 127.
+LaTeX Font Info:    Font shape `JY1/gt/bx/n' in size <9> not available
+(Font)              Font shape `JY1/gt/m/n' tried instead on input line 127.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <9> on input line 134.
+File: pictures/node2vec_structure.png Graphic file (type bmp)
+<pictures/node2vec_structure.png>
+
+Overfull \hbox (8.8801pt too wide) in paragraph at lines 141--142
+ [][] 
+ []
+
+[3]
+File: pictures/node2vec_context.png Graphic file (type bmp)
+<pictures/node2vec_context.png>
+ [4]
+File: pictures/lstm_structure.png Graphic file (type bmp)
+<pictures/lstm_structure.png>
+
+Overfull \hbox (8.88548pt too wide) in paragraph at lines 269--270
+ [][] 
+ []
+
+[5]
+File: pictures/node2vec_visualization.png Graphic file (type bmp)
+<pictures/node2vec_visualization.png>
+
+Overfull \hbox (8.79056pt too wide) in paragraph at lines 357--358
+ [][] 
+ []
+
+[6]
+File: pictures/nt_valid_accuracy.png Graphic file (type bmp)
+<pictures/nt_valid_accuracy.png>
+
+Overfull \hbox (3.27223pt too wide) in paragraph at lines 392--393
+ [][] 
+ []
+
+
+Overfull \hbox (8.43785pt too wide) in paragraph at lines 401--409
+ [][][][] 
+ []
+
+File: pictures/tt_valid_accuracy.png Graphic file (type bmp)
+<pictures/tt_valid_accuracy.png>
+
+Overfull \hbox (1.51567pt too wide) in paragraph at lines 424--425
+ [][] 
+ []
+
+
+Overfull \hbox (8.43785pt too wide) in paragraph at lines 432--440
+ [][][][] 
+ []
+
+[7]
+File: pictures/code_snippets_compare.png Graphic file (type bmp)
+<pictures/code_snippets_compare.png>
+
+Overfull \hbox (6.0519pt too wide) in paragraph at lines 469--470
+ [][] 
+ []
+
+(./MyPaper.bbl
+LaTeX Font Info:    Font shape `JT1/mc/m/it' in size <8> not available
+(Font)              Font shape `JT1/mc/m/n' tried instead on input line 4.
+LaTeX Font Info:    Font shape `JY1/mc/m/it' in size <8> not available
+(Font)              Font shape `JY1/mc/m/n' tried instead on input line 4.
+ [8]) [9] (./MyPaper.aux) ) 
+Here is how much of TeX's memory you used:
+ 927 strings out of 493216
+ 11661 string characters out of 6143982
+ 90639 words of memory out of 5000000
+ 4947 multiletter control sequences out of 15000+600000
+ 19916 words of font info for 76 fonts, out of 8000000 for 9000
+ 929 hyphenation exceptions out of 8191
+ 25i,9n,21p,779b,273s stack positions out of 5000i,500n,10000p,200000b,80000s
+
+Output written on MyPaper.dvi (9 pages, 51288 bytes).
