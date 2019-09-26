@@ -31,7 +31,7 @@
 
 
 \Eabstract{
-Code completion systems help programmers to write code more efficiently and to reduce typographical errors by automatically suggesting the code fragment that the programmers likely to write next. This work attempts to increase prediction performance of an LSTM-based code completion system proposed by Chang Liu et al. by proposing a new embedding method (a vector representation) for AST nodes. This method is called ASTToken2Vec, similar to Word2Vec, which trains a neural network by using context information to give a vector representation of an AST node. We integrate our embedding method with an LSTM model and evaluate its prediction performance on a JavaScript AST dataset generated from open-source programs containing a total of 150,000 JavaScript files.}
+Code completion systems help the programmers to write code more efficiently and to reduce typographical errors by automatically suggesting code fragments that the programmers likely to write next. This work attempts to improve an LSTM neural network-based code completion system by proposing a new embedding method called ASTToken2Vec for program tokens. ASTToken2Vec is inspired by Word2Vec, and gives a vector representation to a program token so that tokens often appear in similar contexts are mapped to positions close to each other.  We integrated ASTToken2Vec with the LSTM-based code completion model and evaluated its prediction performance by using a dataset consisting of 150,000 open-source JavaScript program files.}
 \maketitle \thispagestyle {empty}
 
 
@@ -42,11 +42,15 @@ Code completion systems help programmers to write code more efficiently and to r
 
 \section{Introduction}
 % what is code completion system, why it is useful.
-Code completion systems are one of the most useful and indispensable tools in modern integrated development environments (IDEs). They help programmers writing code faster with less typographical errors.
-An effective code completion system can predict what kind of code programmers want to write and generate a code suggestion list automatically. 
+Code completion is a feature of programming editors that suggests code fragments that are likely to be typed in by the programmer following to the program text just before the cursor position.  It helps the programmer to write code more quickly, to remember rarely used API names, and to reduce typographical errors.
 
+% Define prediction context
+In general, code completion systems make suggestions (we hereafter call \emph{predictions}) based on the program text around the cursor position (we hereafter call a \emph{context}).  Predictions are usually a list of identifiers (e.g., function, method and variable names), but some systems predict a sequence of tokens or a few lines of statements.
 
 % problems in traditional code completion
+Context information determine the prediction performance.  For example, a standard completion feature in Eclipse JDT merely the type of the receiver expression as the context when it predict a method name of a method invocation expression.  Eclipse code recommender \cite{heinemann2011suite} additionally uses a sequence of method calls preceding to the cursor line as the context.  It can improve prediction 
+since many libraries require client programs to call several functions/methods in specific orders.
+
 Traditional code completion systems are not intelligent enough. 
 Most of them are based on statistical methods and suggest code only by simple term frequency which often relatively have a higher error rate. 
 Another problem is that they rely on static types (like Eclipse for Java) to filter out candidates. 
