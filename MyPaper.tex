@@ -1,5 +1,5 @@
 % -*- Mode: LaTeX; Mode: visual-line; -*-
-\documentclass[T, E]{compsoft}
+\documentclass[E]{compsoft}
 
 
 \taikai{2019}
@@ -14,7 +14,7 @@
 
 \title{ASTToken2Vec: An Embedding Method for Neural Code Completion}
 
-\author{Li Dongfang  \quad   Masuhara Hidehiko
+\author{Dongfang Li  \quad   Hidehiko Masuhara
 %
 % ここにタイトル英訳 (英文の場合は和訳) を書く．
 %
@@ -51,12 +51,17 @@ In general, code completion systems make suggestions (we hereafter call \emph{pr
 Context information determine the prediction performance.  For example, a standard completion feature in Eclipse JDT merely the type of the receiver expression as the context when it predict a method name of a method invocation expression.  Eclipse code recommender \cite{heinemann2011suite} additionally uses a sequence of method calls preceding to the cursor line as the context.  It can improve prediction 
 since many libraries require client programs to call several functions/methods in specific orders.
 
-Traditional code completion systems are not intelligent enough. 
-Most of them are based on statistical methods and suggest code only by simple term frequency which often relatively have a higher error rate. 
-Another problem is that they rely on static types (like Eclipse for Java) to filter out candidates. 
-However, the dependency on typing information limits their applicability to widely used in dynamically typed languages like Python.etc.
+Traditional code completion systems make limited use of context information.  For example, Eclipse code recommender, while it uses preceding method calls, ignores names of local variables and control flow around the cursor position.  It also ignores of calls of methods defined in the current project as it relies on the knowledge of the usages of well known libraries.
+
+% First, they 
+%  make limited use of contexts.  As mentioned above, they tend to use 
+% Most of them are based on statistical methods and suggest code only by simple term frequency which often relatively have a higher error rate. 
+% Another problem is that they rely on static types (like Eclipse for Java) to filter out candidates. 
+% However, the dependency on typing information limits their applicability to widely used in dynamically typed languages like Python.etc.
 
 % deep learning models, the reason we can apply dl model to code completion
+Deep learning-based code completion takes a different approach by ****
+
 With the rapid development of deep learning techniques, more and more research pays attention to applying deep learning models, especially recurrent neural networks (RNNs) to automatic code completion. 
 RNN models achieved excellent performance in the natural language processing (NLP) field. 
 Intuitively, a programming language can be considered as a special language just with stricter semantic and syntax. 
