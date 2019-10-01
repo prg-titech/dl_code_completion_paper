@@ -18,7 +18,7 @@
 %
 % ここにタイトル英訳 (英文の場合は和訳) を書く．
 %
-%\ejtitle{ASTToken2Vec: An Embedding Method for Neural Code Completion}
+\ejtitle{ASTToken2Vec: 神経回路網によるコード補完のための埋め込み手法}
 %
 % ここに著者英文表記 (英文の場合は和文表記) および
 % 所属 (和文および英文) を書く．
@@ -60,19 +60,10 @@ Traditional code completion systems make limited use of context information.  Fo
 % However, the dependency on typing information limits their applicability to widely used in dynamically typed languages like Python.etc.
 
 % deep learning models, the reason we can apply dl model to code completion
-Deep learning-based code completion takes a different approach by ****
+Deep learning-based code completion, which is actively studied in the last few years, takes a different approach to exploit context information as well as knowledge of the programming language and APIs.  
+It uses a neural network model, more specifically, a recurrent deep neural network (RNN) that takes a sequence of program tokens and predicts the next token.  RNNs are known to be successful in the domain of natural language texts. 
 
-With the rapid development of deep learning techniques, more and more research pays attention to applying deep learning models, especially recurrent neural networks (RNNs) to automatic code completion. 
-RNN models achieved excellent performance in the natural language processing (NLP) field. 
-Intuitively, a programming language can be considered as a special language just with stricter semantic and syntax. 
-Hence, it is straightforward to apply RNNs to programming languages tasks like code completion and may have an exciting performance.
-
-% introduce our work: node2vec 
-% The embedding method is a way to represent discrete variables as continuous vectors. 
-In this paper, we propose an embedding method for abstract syntax trees (ASTs) nodes called ASTToken2Vec to improve the prediction performance of the deep learning-based code completion. 
-It consists of a four-layer neural network for encoding the context information of ASTs to generate semantic-based embedding representation vectors that contain more knowledge hidden behind ASTs. 
-We use this ASTToken2Vec model as a pre-trained model and integrate it with an LSTM based model as a code completion system to predict next tokens. 
-We name our integration model as AT2V-LSTM model and the overview of our model illustrates in Figure \ref{fig:overivew_model}.
+When applying an RNN (LSTM?) to programming languages, SOMEONE proposed to encode structural information of a program in addition to the lexical tokens that form the program.  *****(write more)
 
 \begin{figure}[!ht]
 \centering
@@ -80,71 +71,95 @@ We name our integration model as AT2V-LSTM model and the overview of our model i
 \caption{Overview of ASTToken2Vec LSTM integration model}
 \label{fig:overivew_model}
 \end{figure}
+% introduce our work: node2vec 
+% The embedding method is a way to represent discrete variables as continuous vectors. 
+This paper proposes an embedding method called ASTToken2Vec for abstract syntax tree (ASTs) nodes of a program in order to improve the prediction performance of the deep learning-based code completion. 
+It is a four-layer neural network that takes one AST token along with a few contextual tokens as input, and outputs one vector that represents the AST token.  The intuition behind the embedding is to give similar vector representation for the tokens that are semantically similar, which is similar to the idea behind the Word2Vec embedding \cite{word2vec}.
+As a code completion system, whose overview is shown in Figure~\ref{fig:overivew_model}, we use the embedding method as a pre-trained frontend to an LSTM-based neural network that predicts next AST token from a sequence of AST tokens.
+% The vector representation will be used to learn and predict in a code completion system called the AT2V-LSTM model.  
+% to learn and encode context information of AST tokens to generate semantic-based embedding representation vectors that contain more knowledge hidden behind ASTs. 
+% We use this ASTToken2Vec model as a pre-trained model and integrate it with an LSTM based model as a code completion system to predict next tokens. 
+% We name our integration model as AT2V-LSTM model and the overview of our model illustrates in Figure \ref{fig:overivew_model}.
 
 As an experiment, we implement both ASTToken2Vec embedding and AT2V-LSTM model with a JavaScript AST dataset\Cite{dataset} collected from open-source programs containing a total of 150,000 JavaScript files. 
-We visualize representation vectors of several terminal tokens and evaluate the performance of predicting next tokens by AT2V-LSTM integration model
-From the evaluation and results analysis, we conclude that the ASTToken2Vec method is able to generate semantic-based representation vectors of AST nodes and the AT2V-LSTM integrated model predicts tokens more correctly.
+We visualize representation vectors of several terminal tokens and evaluate the performance of predicting next tokens by AT2V-LSTM integration model.
+From the results analysis, we conclude that the ASTToken2Vec method is able to generate semantic-based representation vectors of AST nodes and the AT2V-LSTM integrated model predicts tokens more accurately.
 
 
 
 
 \section{Background}
-Hindle et al.\cite{hindle2012naturalness} explore how to use a widely adopted \textit{n-gram} statistical language model for code completion and provide empirical evidence which is able to prove that programming language code is even more repetitive than natural languages. 
-Nguyen et al.\cite{DBLP:journals/corr/MaddisonT14} propose generative models of natural source code with hierarchical structure and a distributed representation of source code element. 
-They also leverage compiler logic and abstractions to improve their generative models. 
-Tung et al.\cite{Nguyen:2013:SSL:2491411.2491458} extends the state-of-the-art \textit{n-gram} approach which is called SLAMC by incorporating semantic information into code tokens. 
+% This is related work.  (issue #3)
+Hindle et al.\  \cite{hindle2012naturalness} used the \textit{n-gram} technique for code completion.  Their work showed that programming code is more repetitive than natural language texts.
+% this is also related work: TODO: read the paper
+Nguyen et al.\  \cite{DBLP:journals/corr/MaddisonT14} propose generative models of natural source code with hierarchical structure and a distributed representation of source code element. 
+They also leverage compiler logic and abstractions to improve their generative models.
+% this is also related work.
+Tung et al.\  \cite{Nguyen:2013:SSL:2491411.2491458} extends the state-of-the-art \textit{n-gram} approach which is called SLAMC by incorporating semantic information into code tokens. 
 
+% related work, as it is statistical
+Allamanis et al.\ proposed a statistical nonparametric Bayesian probabilistic tree-based system for extracting programming idioms from a source code text
+\cite{allamanis2014mining}.
+% related work, TODO cannot understand...
+Liang et al.\  \cite{liang2010learning} focus on learning programs for multiple related tasks with a few training samples and propose a nonparametric hierarchical Bayesian model which is able to share the statistical information across multiple tasks for code completion.
 
-Comparing with \textit{n-gram} model, a statistical nonparametric Bayesian probabilistic tree-based system\cite{allamanis2014mining} is proposed by Allamanis et al. which is able to extract code idioms from the existing written code files.
-Liang et al.\cite{liang2010learning} focus on learning programs for multiple related tasks with a few training samples and propose a nonparametric hierarchical Bayesian model which is able to share the statistical information across multiple tasks for code completion.
-
-Bielik et al.\cite{bielik2016phog} introduce a generative model for code called probabilistic higher-order grammar (PHOG). This model is able to capture the rich context information between tokens by allowing conditioning of a production rule. 
-Raychev et al.\cite{raychev2016probabilistic} create a domain-specific language (DSL) over abstract syntax trees (ASTs) called TGEN which can encode an AST to a specific language context.
+% related work, TODO what is "by allowing conditioning of a production rule. "???
+Bielik et al.\  \cite{bielik2016phog} proposed a generative model for code called the probabilistic higher-order grammar. This model can capture context information between tokens by allowing conditioning of a production rule. 
+% this is ...? a subsequent work of raychev2014code, background???
+Raychev et al.\  \cite{raychev2016probabilistic} create a domain-specific language (DSL) over abstract syntax trees (ASTs) called TGEN which can encode an AST to a specific language context.
 They also propose a special decision tree called DEEP3 which can make code predictions leveraging the AST context encoded by the TGEN model.
 
-Raychev et al.\cite{raychev2014code} and White et al.\cite{white2015toward} explore how to apply RNN models on sequences of tokens to facilitate the task of code completion. 
-Chang et al.\cite{liu2016neural} propose several LSTM-based models for code completion with an AST dataset and they leverage the ASTs by converting ASTs to sequences of training samples. 
+% Raychev is RNN but we do not directly based on this!???
+Raychev et al.\  \cite{raychev2014code} and White et al.\  \cite{white2015toward} explore how to apply RNN models on sequences of tokens to facilitate the task of code completion.
+% This is the work we based on.  Hmm, it is a rejected paper.
+Liu et al.\  \cite{liu2016neural} propose several LSTM-based models for code completion with an AST dataset and they leverage the ASTs by converting ASTs to sequences of training samples. 
 Their work gives us inspiration about how to convert an AST to a sequence and how to train an LSTM model with AST dataset. 
+
+% TODO: tree encoding
+% TODO: Word2Vec
 
 
 \section{Abstract Syntax Tree}
 % 介绍AST的详细内容，结构等
-Abstract Syntax Trees (AST) are a tree structure that represents structural information of programs. It is widely used in code completion engines.
+An abstract syntax tree (AST) is a structure that represents structural information of programs. It is widely used in code completion.
 %ASTToken2Vec model training and AT2V-LSTM integration model training.
 
-There are two kinds of a node in ASTs, non-terminal nodes and terminal nodes. 
-A non-terminal node has a children node list denoting all its children nodes. 
-For example, in JavaScript, a non-terminal token could be ``FunctionDeclaration'', ``VariableDeclarator'', etc. 
-These non-terminal tokens declare what kind of functions or variables specified in the program. 
-Other kinds of non-terminal tokens represent more knowledge about the structure and logical judgment of a program like ``ForStatement'', ``IfStatement'', ``WhileStatement'', etc. 
+% this is background information
+An AST consists of two kinds of nodes, namely \emph{non-terminal nodes} and \emph{terminal nodes}.
+A non-terminal node is a node that has one or more children nodes. 
+For example, in JavaScript, non-terminal nodes correspond to syntax categories such as function declarations, variable declarations, \texttt{for} statements, \texttt{if} statements, and \texttt{while} statements.
+% These non-terminal tokens declare what kind of functions or variables specified in the program. 
+% Other kinds of non-terminal tokens represent more knowledge about the structure and logical judgment of a program like ``ForStatement'', ``IfStatement'', ``WhileStatement'', etc. 
 
-A terminal node has ``value'' to represent the value of terminals and does not have any children node. 
-In JavaScript, for instance, the type of terminal tokens could be ``LiteralString'', ``LiteralNumber'', ``Identifier'' etc. 
-Due to programmers can specify any strings, variables and function's name in a program, it is obvious that there are infinite possibilities for terminal tokens.
+A terminal node is a node that appear only at leaf positions in an AST.
+We call the lexical token of a terminal code as a \emph{value}.
+In JavaScript, terminal nodes correspond to to syntax categories such as identifiers (variable, field and function names), literal numbers, and literal strings.  
 
-Due to ASTs contain more semantic knowledge about source code, we use ASTs as the basic data to generate two sets of training samples for our models' training.
+% Due to ASTs contain more semantic knowledge about source code, we use ASTs as the basic data to generate two sets of training samples for our models' training.
 
 
 
 \section{ASTToken2Vec Embedding}
 \label{section:node2vec}
-ASTToken2Vec model is an embedding model for AST nodes. It is inspired by the embedding method for natural languages, namely Word2Vec\cite{word2vec}. 
+ASTToken2Vec is an embedding neural network model for AST nodes.  By using ASTToken2Vec, we convert between program tokens and a point in a vector space so that the latter representation can be used as input/output of the neural network model for code completion.  
+
+The intuitive goal of ASTToken2Vec is 
+ASTToken2Vec is inspired by Word2Vec \cite{word2vec}, which gives vector representations to natural language words 
+the embedding method for natural languages, namely . 
 It trains a four-layers neural network to generate the semantic-based representation vectors of AST nodes which enable the LSTM-based code completion model to leverage more structural knowledge to predict next tokens.
 In order to do that, we give a basic hypothesis of ASTToken2Vec which is same as Word2Vec's: we assume that if two nodes in an AST have a similar context, the meaning of these two nodes also has a high-level similarity. 
 We specified the surrounding non-terminal nodes of a target node as the non-terminal context and surrounding terminal nodes as the terminal context. The details of contexts is explained in subsection\ref{sub:embedding_nt} and subsection\ref{sub:embedding_tt}.
 
 
 \subsection{Model Architecture}
-The ASTToken2Vec model is a four layers neural network contains one input layer, one single hidden layer, and two output layers. 
-Due to there are two kinds of tokens non-terminal and terminal in ASTs, we design two application variant of our embedding model: ASTToken2Vec for terminal token abbreviated as TT2V and ASTToken2Vec for a non-terminal token called NT2V.
+ASTToken2Vec is a pair of four layers neural networks, each contains one input layer, one hidden layer, and two output layers as shown in Figure~\ref{fig:node2vec-structure}.  Two identical, yet independent networks are for embedding non-terminal and terminal nodes, respectively.  We hereafter call the networks NT2V and TT2V, respectively.
 
-The input layer is the one-hot encoding representation vector of a non-terminal node for the NT2V model and a terminal node for the TT2V model. 
-The ASTToken2Vec model has two output layers: non-terminal output layer for non-terminal context representation and terminal output layer representing the terminal context of the input node. 
-The length of these two output layers is equal to the size of the terminal vocabulary and non-terminal vocabulary separately.
-We use the values in the hidden layer as the embedding vectors to represent the input AST node and the length of the hidden layer is a hyperparameter $D$ specified by users. 
+The input layer uses the one-hot encoding representation, where $i$'th token in a vocabulary of $V$ different tokens is represented as an $V$-dimensional vector all but $i$'th element is zero.  
+The two output layers represent the context of non-terminal and terminal nodes, each of which has the same vector size to the non-terminal/terminal input vectors.
+We use the values in the hidden layer as the embedding vector of the input values.  The size of the hidden layer, a hyperparameter $D$, is determined by heuristics.
 In the training phase, we calculate a joint loss function to update the model.
 
-Figure \ref{fig:node2vec-structure}(1) illustrates the architecture of the NT2V model and Figure \ref{fig:node2vec-structure}(2) is the architectrue of TT2V model.
+% Figure \ref{fig:node2vec-structure}(1) illustrates the architecture of the NT2V model and Figure \ref{fig:node2vec-structure}(2) is the architectrue of TT2V model.
 
 \begin{figure}[!ht]
 \centering
@@ -154,8 +169,7 @@ Figure \ref{fig:node2vec-structure}(1) illustrates the architecture of the NT2V 
 \end{figure}
 
 
-
-\subsection{Embedding for Non-terminals}
+\subsection{Embedding for Non-terminals (NT2V)}
 \label{sub:embedding_nt}
 The ASTToken2Vec model for encoding non-terminals to vectors is abbreviated as NT2V. 
 It employs both the terminal context and the non-terminal context of a target non-terminal to generate embedding representation vectors.
@@ -325,7 +339,7 @@ The softmax function returns the possibility of the next tokens predicting.
 \section{Experiments}
 \label{section:experiment}
 \subsection{Dataset Details}
-The data we use for both the ASTToken2Vec embedding model training and AT2V-LSTM integration model training is from the same dataset which is a JavaScript AST dataset provided by Raychev et al.\cite{dataset}. 
+The data we use for both the ASTToken2Vec embedding model training and AT2V-LSTM integration model training is from the same dataset which is a JavaScript AST dataset provided by Raychev et al.\  \cite{dataset}. 
 There are 100,000 ASTs as training dataset and 50,000 ASTs as evaluation dataset. 
 
 % 介绍nonterminal的数据集，并解释增加了两个新bit，扩展了nonterminal的种类
