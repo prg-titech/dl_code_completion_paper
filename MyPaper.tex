@@ -12,7 +12,7 @@
 
 \begin{document}
 
-\title{ASTToken2Vec: An Embedding Method for Neural Code Completion}
+\title{ASTToken2Vec: an Embedding Method for Neural Code Completion}
 
 \author{Dongfang Li  \quad   Hidehiko Masuhara
 %
@@ -25,7 +25,7 @@
 % 複数著者の所属はまとめてよい．
 %
 \shozoku{李 東方, 増原 英彦}{東京工業大学数理計算科学系}%
-{Dept.\ of Mathematical and Computing Science, Tokyo Institute of Technology}}
+{Department of Mathematical and Computing Science, Tokyo Institute of Technology}}
 
 
 
@@ -143,15 +143,23 @@ In JavaScript, terminal nodes correspond to to syntax categories such as identif
 \label{section:node2vec}
 ASTToken2Vec is an embedding neural network model for AST nodes.  By using ASTToken2Vec, we convert between program tokens and a point in a vector space so that the latter representation can be used as input/output of the neural network model for code completion.  
 
-The intuitive goal of ASTToken2Vec is 
-ASTToken2Vec is inspired by Word2Vec \cite{word2vec}, which gives vector representations to natural language words 
-the embedding method for natural languages, namely . 
-It trains a four-layers neural network to generate the semantic-based representation vectors of AST nodes which enable the LSTM-based code completion model to leverage more structural knowledge to predict next tokens.
-In order to do that, we give a basic hypothesis of ASTToken2Vec which is same as Word2Vec's: we assume that if two nodes in an AST have a similar context, the meaning of these two nodes also has a high-level similarity. 
-We specified the surrounding non-terminal nodes of a target node as the non-terminal context and surrounding terminal nodes as the terminal context. The details of contexts is explained in subsection\ref{sub:embedding_nt} and subsection\ref{sub:embedding_tt}.
+Intuitively, we design ASTToken2Vec to incorporate similarities of tokens into embedded representations, where two similar programs tokens will have two points in the vector space that are close to each other.  By similarity, we here mean similarity in natural language semantics (such as ``\texttt{size}'' and ``\texttt{length}'') as well as similarity in the API usage (such as \texttt{Stack.peek()} and \texttt{Stack.pop()}).
+
+ASTToken2Vec is inspired by Word2Vec \cite{word2vec}, which gives vector representations to natural language words. Differently from Word2Vec, ASTToken2Vec 
+uses two identical networks for embedding non-terminal and terminal tokens.  It also separately provides non-terminal and terminal tokens as context information for training.
+
+% ASTToken2Vec trains a four-layers neural network to generate the semantic-based representation vectors of AST nodes which enable the LSTM-based code completion model to leverage more structural knowledge to predict next tokens.
+% In order to do that, we give a basic hypothesis of ASTToken2Vec which is same as Word2Vec's: we assume that if two nodes in an AST have a similar context, the meaning of these two nodes also has a high-level similarity. 
+% We specified the surrounding non-terminal nodes of a target node as the non-terminal context and surrounding terminal nodes as the terminal context. The details of contexts is explained in subsection\ref{sub:embedding_nt} and subsection\ref{sub:embedding_tt}.
 
 
 \subsection{Model Architecture}
+\begin{figure}[!ht]
+\centering
+\includegraphics[width=7.5cm, height=4cm]{pictures/node2vec_structure.png}
+\caption{Architecture of NT2V (1) and TT2V (2)}
+\label{fig:node2vec-structure}
+\end{figure}
 ASTToken2Vec is a pair of four layers neural networks, each contains one input layer, one hidden layer, and two output layers as shown in Figure~\ref{fig:node2vec-structure}.  Two identical, yet independent networks are for embedding non-terminal and terminal nodes, respectively.  We hereafter call the networks NT2V and TT2V, respectively.
 
 The input layer uses the one-hot encoding representation, where $i$'th token in a vocabulary of $V$ different tokens is represented as an $V$-dimensional vector all but $i$'th element is zero.  
@@ -161,24 +169,17 @@ In the training phase, we calculate a joint loss function to update the model.
 
 % Figure \ref{fig:node2vec-structure}(1) illustrates the architecture of the NT2V model and Figure \ref{fig:node2vec-structure}(2) is the architectrue of TT2V model.
 
-\begin{figure}[!ht]
-\centering
-\includegraphics[width=7.5cm, height=4cm]{pictures/node2vec_structure.png}
-\caption{Architecture of NT2V (1) and TT2V (2)}
-\label{fig:node2vec-structure}
-\end{figure}
 
 
 \subsection{Embedding for Non-terminals (NT2V)}
 \label{sub:embedding_nt}
-The ASTToken2Vec model for encoding non-terminals to vectors is abbreviated as NT2V. 
-It employs both the terminal context and the non-terminal context of a target non-terminal to generate embedding representation vectors.
+The NT2V embedding uses both the terminal and non-terminal contexts for training.
 A training tuple for NT2V contains three elements: (\textit{target non-terminal, non-terminal context, terminal context}) where the \textit{target non-terminal} is the non-terminal token which the NT2V model generates embedding vector for. 
 The second and third elements are lists representing the contexts of the input \textit{target non-terminal}.
 We define these two contexts as follows.
 
 \subsubsection{Non-terminal context}
-The non-terminal context for a non-terminal token means the surrounding non-terminal nodes of it in an AST. 
+The non-terminal context for a non-terminal token means the surrounding non-terminal nodes of it in an AST. ****************
 Concretely, we define the $n$ parent non-terminal nodes of a target non-terminal and its all non-terminal children nodes as its non-terminal context.
 Here, $n$ is a hyper-parameter which declares the scope of the parent non-terminal context employed by the NT2V model. 
 If $n$ is relatively small, it means NT2V model does not consider the surrounding non-terminal tokens which are far from the target node as the non-terminal context.
