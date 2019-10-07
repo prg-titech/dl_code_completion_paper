@@ -31,7 +31,7 @@
 
 
 \Eabstract{
-Code completion systems help the programmers to write code more efficiently and to reduce typographical errors by automatically suggesting code fragments that the programmers likely to write next. This work attempts to improve an LSTM neural network-based code completion system by proposing a new embedding method called ASTToken2Vec for program tokens. ASTToken2Vec is inspired by Word2Vec, and gives a vector representation to a program token so that tokens often appear in similar contexts are mapped to positions close to each other.  We integrated ASTToken2Vec with the LSTM-based code completion model and evaluated its prediction performance by using a dataset consisting of 150,000 open-source JavaScript program files.}
+Code completion systems help the programmers to write code more efficiently and to reduce typographical errors by automatically suggesting code fragments that are most likely to be written next. This work attempts to improve a neural network-based code completion system by proposing a new embedding method called ASTToken2Vec for program tokens. ASTToken2Vec is inspired by Word2Vec, and gives a vector representation to a program token so that two similar tokens will have representations closed to each other in the vector space.  We integrated ASTToken2Vec with a neural network-based code completion model and evaluated its prediction performance by using a dataset consisting of 150,000 open-source JavaScript program files.}
 \maketitle \thispagestyle {empty}
 
 
@@ -45,13 +45,13 @@ Code completion systems help the programmers to write code more efficiently and 
 Code completion is a feature of programming editors that suggests code fragments that are likely to be typed in by the programmer following to the program text just before the cursor position.  It helps the programmer to write code more quickly, to remember rarely used API names, and to reduce typographical errors.
 
 % Define prediction context
-In general, code completion systems make suggestions (we hereafter call \emph{predictions}) based on the program text around the cursor position (we hereafter call a \emph{context}).  Predictions are usually a list of identifiers (e.g., function, method and variable names), but some systems predict a sequence of tokens or a few lines of statements.
+In general, code completion systems make suggestions (we hereafter call \emph{predictions}) based on the program text before the cursor position (we hereafter call a \emph{context}).  Predictions are usually a list of identifiers (e.g., function, method and variable names), but some systems predict a sequence of tokens or a few lines of statements.
 
 % problems in traditional code completion
-Context information determine the prediction performance.  For example, a standard completion feature in Eclipse JDT merely the type of the receiver expression as the context when it predict a method name of a method invocation expression.  Eclipse code recommender \cite{heinemann2011suite} additionally uses a sequence of method calls preceding to the cursor line as the context.  It can improve prediction 
+Contexts determine the prediction performance.  For example, the standard completion feature in Eclipse JDT merely the type of the receiver expression as the context when it predict a method name of a method invocation expression.  Eclipse code recommender \cite{heinemann2011suite} additionally uses a sequence of method calls preceding to the cursor line as the context.  It can improve prediction 
 since many libraries require client programs to call several functions/methods in specific orders.
 
-Traditional code completion systems make limited use of context information.  For example, Eclipse code recommender, while it uses preceding method calls, ignores names of local variables and control flow around the cursor position.  It also ignores of calls of methods defined in the current project as it relies on the knowledge of the usages of well known libraries.
+Traditional code completion systems make limited use of context information.  For example, Eclipse code recommender, while it uses preceding method calls, ignores names of local variables and control flow around the cursor position.  %It also ignores of calls of methods defined in the current project as it relies on the knowledge of the usages of well known libraries.
 
 % First, they 
 %  make limited use of contexts.  As mentioned above, they tend to use 
@@ -60,30 +60,31 @@ Traditional code completion systems make limited use of context information.  Fo
 % However, the dependency on typing information limits their applicability to widely used in dynamically typed languages like Python.etc.
 
 % deep learning models, the reason we can apply dl model to code completion
-Deep learning-based code completion, which is actively studied in the last few years, takes a different approach to exploit context information as well as knowledge of the programming language and APIs.  
-It uses a neural network model, more specifically, a recurrent deep neural network (RNN) that takes a sequence of program tokens and predicts the next token.  RNNs are known to be successful in the domain of natural language texts. 
+Deep learning-based code completion, which is actively studied in the last few years \cite{liu2016neural,dataset,raychev2014code,white2015toward}, takes a different approach to exploit context information as well as knowledge of the programming language and APIs.  
+It uses a neural network model, more specifically, a recurrent deep neural network (RNN) that takes a sequence of program tokens and predicts the next token.  It can be understood as an application of the RNN-based sentence generation for natural lnaguages.%RNNs are known to be successful in the domain of natural language texts. 
 
-When applying an RNN (LSTM?) to programming languages, SOMEONE proposed to encode structural information of a program in addition to the lexical tokens that form the program.  *****(write more)
+When applying an RNN to programming languages, structural information in program texts matters to prediction, while typical RNN-based systems for natural languages  treat a text merely as a sequence of words.  There are several attempts to incorporate structural information in programs into RNN-based neural networks \cite{bielik2016phog,liu2016neural,raychev2016probabilistic}.  They basically encode an abstract syntax tree into a sequence of tokens with flags so that the sequence will have sufficient information to reconstruct the tree structure.
 
-\begin{figure}[!ht]
+\begin{figure*}[!ht]
 \centering
-\includegraphics[width=\columnwidth]{pictures/overview.pdf}
+\includegraphics[scale=0.9]{pictures/overview.pdf}
 \caption{Overview of ASTToken2Vec LSTM integration model}
 \label{fig:overivew_model}
-\end{figure}
+\end{figure*}
 % introduce our work: node2vec 
 % The embedding method is a way to represent discrete variables as continuous vectors. 
 This paper proposes an embedding method called ASTToken2Vec for abstract syntax tree (ASTs) nodes of a program in order to improve the prediction performance of the deep learning-based code completion. 
-It is a four-layer neural network that takes one AST token along with a few contextual tokens as input, and outputs one vector that represents the AST token.  The intuition behind the embedding is to give similar vector representation for the tokens that are semantically similar, which is similar to the idea behind the Word2Vec embedding \cite{word2vec}.
-As a code completion system, whose overview is shown in Figure~\ref{fig:overivew_model}, we use the embedding method as a pre-trained frontend to an LSTM-based neural network that predicts next AST token from a sequence of AST tokens.
+It is a four-layer neural network that takes one AST token along with a few contextual tokens as input, and outputs one vector that represents the AST token.  The idea is based on the Word2Vec embedding \cite{word2vec}.  Similar to Word2Vec, the intuition behind the embedding is to give two semantically similar tokens vector representations that are close to each other.
+As a code completion system, whose overview is shown in Figure~\ref{fig:overivew_model}, we use the embedding method as a frontend to an long short-term memory (LSTM)-based neural network that predicts next AST token from a sequence of AST tokens.  LSTM is a variant of RNN that explicitly manages long-term dependent information, and known to be useful to many recognition problems in natural languages.
 % The vector representation will be used to learn and predict in a code completion system called the AT2V-LSTM model.  
 % to learn and encode context information of AST tokens to generate semantic-based embedding representation vectors that contain more knowledge hidden behind ASTs. 
 % We use this ASTToken2Vec model as a pre-trained model and integrate it with an LSTM based model as a code completion system to predict next tokens. 
 % We name our integration model as AT2V-LSTM model and the overview of our model illustrates in Figure \ref{fig:overivew_model}.
 
-As an experiment, we implement both ASTToken2Vec embedding and AT2V-LSTM model with a JavaScript AST dataset\Cite{dataset} collected from open-source programs containing a total of 150,000 JavaScript files. 
-We visualize representation vectors of several terminal tokens and evaluate the performance of predicting next tokens by AT2V-LSTM integration model.
-From the results analysis, we conclude that the ASTToken2Vec method is able to generate semantic-based representation vectors of AST nodes and the AT2V-LSTM integrated model predicts tokens more accurately.
+As an experiment, we implemented both the ASTToken2Vec embedding and the AT2V-LSTM model, and trained them with a JavaScript AST dataset \cite{dataset}, which is a  collection of open-source programs containing a total of 150,000 JavaScript files. 
+The validity of the embedding is manually confirmed by observing a set of example cases.  The experiment with the dataset showed slight improvements in accuracy with the ASTToken2Vec embedding compared to straightforward embedding.
+% We visualize representation vectors of several terminal tokens and evaluate the performance of predicting next tokens by AT2V-LSTM integration model.
+% From the results analysis, we conclude that the ASTToken2Vec method is able to generate semantic-based representation vectors of AST nodes and the AT2V-LSTM integrated model predicts tokens more accurately.
 
 
 
@@ -141,7 +142,7 @@ In JavaScript, terminal nodes correspond to to syntax categories such as identif
 
 \section{ASTToken2Vec Embedding}
 \label{section:node2vec}
-ASTToken2Vec is an embedding neural network model for AST nodes.  By using ASTToken2Vec, we convert between program tokens and a point in a vector space so that the latter representation can be used as input/output of the neural network model for code completion.  
+ASTToken2Vec is an embedding neural network model for AST nodes. It converts between a program token and a point in a vector space.  The latter representation can be used as an input/output of the neural network model for code completion.  
 
 Intuitively, we design ASTToken2Vec to incorporate similarities of tokens into embedded representations, where two similar programs tokens will have two points in the vector space that are close to each other.  By similarity, we here mean similarity in natural language semantics (such as ``\texttt{size}'' and ``\texttt{length}'') as well as similarity in the API usage (such as \texttt{Stack.peek()} and \texttt{Stack.pop()}).
 
@@ -179,26 +180,23 @@ The second and third elements are lists representing the contexts of the input \
 We define these two contexts as follows.
 
 \subsubsection{Non-terminal context}
-The non-terminal context for a non-terminal token means the surrounding non-terminal nodes of it in an AST. ****************
-Concretely, we define the $n$ parent non-terminal nodes of a target non-terminal and its all non-terminal children nodes as its non-terminal context.
-Here, $n$ is a hyper-parameter which declares the scope of the parent non-terminal context employed by the NT2V model. 
-If $n$ is relatively small, it means NT2V model does not consider the surrounding non-terminal tokens which are far from the target node as the non-terminal context.
+The non-terminal context for a non-terminal token means the surrounding non-terminal nodes in an AST. 
+Concretely, we define the $n$ ancestor non-terminal nodes of a target non-terminal and its all non-terminal children nodes as its non-terminal context.
+Here, $n$ is a hyperparameter. 
+% If $n$ is relatively small, it means NT2V model does not consider the surrounding non-terminal tokens which are far from the target node as the non-terminal context.
 
 \subsubsection{Terminal context} 
-We define the terminal context of a target non-terminal as all its children terminal nodes. 
-If a non-terminal node does not have any terminal children nodes (all its children nodes are non-terminal tokens or it does not have any children), we use a special terminal token: \textit{TT-EMPTY} to declare an empty terminal context for it.
+We define the terminal context of a non-terminal as all the direct children terminal nodes. 
+% When there is no terminal children nodes (all its children nodes are non-terminal tokens or it does not have any children), we use a special terminal token: \textit{TT-EMPTY} to declare an empty terminal context for it.
 
-We use an example of partial AST to illustrate the contexts of a non-terminal in the Figure \ref{fig:node2vec-context}(1). The nodes whose name starts with ``NT'' are non-terminal nodes and nodes whose name starts with ``TT'' represent terminal nodes. 
-In this AST, We assume a target non-terminal node ``NT-4'' which is surrounded by an oval. 
-Non-terminal nodes surrounded by a rectangle are the non-terminal context of the target node including ``NT-2'' and ``NT-1''. 
-Terminal nodes: ``TT-1'', ``TT-2'' and ``TT-3'' which have an underline mean the terminal context of the target node ``NT-4''. 
-Hyper-parameter $n$ here is specified as two.
-
+We use an example of a partial AST to illustrate the contexts of a non-terminal in the Figure~\ref{fig:node2vec-context}. The boxes and ovals are non-terminal and terminal nodes, respectively.  
+Let us focus the middle non-terminal node ``minv'' (method invocation).  The context of this node (where $n=2$) is illustrated as a shadowed area, consisting of the two ancestor nodes, namely ``if'' and ``block'', one non-terminal child ``fget'' (field get) and the three terminal nodes, namely \texttt{cancel}, \texttt{flag} and \texttt{timeOut}.
+%Hyperparameter $n$ here is two.
 
 \begin{figure}[!ht]
 \centering
-\includegraphics[width=7cm, height=3.5cm]{pictures/node2vec_context.png}
-\caption{Non-terminal and terminal context for non-terminal nodes (1) and terminal nodes (2)}
+\includegraphics[scale=0.9]{pictures/ast-context.pdf}
+\caption{An example of contexts.  Boxes and ovals are non-terminal and terminal nodes, respectively.  The nodes in the gray area are the context of the method invocation (minv) node in the middle.  The nodes surrounded by a dashed line are the context of the terminal node \texttt{flag}.}
 \label{fig:node2vec-context}
 \end{figure}
 
@@ -206,7 +204,7 @@ Hyper-parameter $n$ here is specified as two.
 
 
 
-\subsection{Embedding for Terminals}
+\subsection{Embedding for Terminals (NT2V)}
 \label{sub:embedding_tt}
 The ASTToken2Vec model for terminal tokens' embedding vectors generation is abbreviated as TT2V.
 Similar with NT2V model, the structure of training tuples for TT2V is (\textit{target terminal, non-terminal context, terminal context}) 
@@ -224,43 +222,43 @@ Here $m$ is a hyperparameter to specify the size of the terminal context.
 A relatively small $m$ means TT2V model does not consider too many surrounding terminal nodes as the terminal context. 
 If a terminal node does not have any neighbor terminal nodes which means its parent node only has one single terminal child, in this case, we use a special terminal node: \textit{TT-EMPTY} to represent an empty terminal context. 
 
-The partial AST in the Figure \ref{fig:node2vec-context}(2) shows a concrete example of what is contexts for terminals.
-We specify a target terminal node ``TT-2'' which is surrounded by an oval. 
-Non-terminal nodes: ``NT-2'' and ``NT-4'' which are emphasized by a rectangle, represent the non-terminal context and terminal nodes ``TT-1'' and ``TT-3'' are the terminal context of the target node. 
-In this example, hyperparameter $n$ is specified as two and $m$ is equal to one.
+The partial AST in the Figure~\ref{fig:node2vec-context} shows a concrete example of what is contexts for terminals.
+We focus the target terminal node \texttt{flag}.   The context of the node, where $n=2$ and $m=1$, is the area surrounded by a dashed line in the figure, consisting of two non-terminal nodes ``if'' and ``minv'', and two terminal nodes \texttt{cancel} and \texttt{timeOut}.
+% Non-terminal nodes: ``NT-2'' and ``NT-4'' which are emphasized by a rectangle, represent the non-terminal context and terminal nodes ``TT-1'' and ``TT-3'' are the terminal context of the target node. 
+% In this example, hyperparameter $n$ is specified as two and $m$ is equal to one.
 
 \subsection{Joint Loss Function}
 Due to there are two output layers in our ASTToken2Vec model, we design a joint loss function combining the non-terminal context output and terminal context output. 
 
 There are three parts of the loss function calculation. 
-$Loss_{nt}$ is used to represent the loss of non-terminal context output. 
-The loss of terminal context output is represented by $Loss_{tt}$. 
+$\mathit{Loss}_{\mathit{NT}}$ is used to represent the loss of non-terminal context output. 
+The loss of terminal context output is represented by $\mathit{Loss}_{\mathit{TT}}$. 
 Both of them are multi-labels loss calculations because there are more than one surrounding tokens as the context. 
-And $Loss_{total}$ is the final joint loss function for our model's training.
+ $\mathit{Loss}_{\mathit{total}}$ is the final joint loss function for our model's training.
 
 \begin{equation}
-Loss_{nt} = -\sum_{i=1}^{N}(y_{nt-context}^{i} \times log(\hat{y}_{nt-context}^{i}))\label{equ:lossnt}
+\mathit{Loss}_{\mathit{NT}} = -\sum_{i=1}^{N}(y_{\mathit{NTcontext}}^{i} \times \log(\hat{y}_{\mathit{NTcontext}}^{i}))\label{equ:lossnt}
 \end{equation}
 
-Equation\ref{equ:lossnt} is the $Loss_{nt}$ calculation formula which is a $log$ loss function. 
-Concretely, for an input token $x$, ASTToken2Vec model calculates the non-terminal context output as $\hat{y}_{nt-context}$ and $y_{nt-context}^{i}$ represents its ground-truth non-terminal context.
+Equation~(\ref{equ:lossnt}) is the $\mathit{Loss}_{\mathit{NT}}$ calculation formula which is a logarithmic loss function. 
+Concretely, for an input token $x$, ASTToken2Vec model calculates the non-terminal context output as $\hat{y}_{\mathit{NTcontext}}$ and $y_{\mathit{NTcontext}}^{i}$ represents its ground-truth non-terminal context.
 $N$ is the size of the non-terminal vocabulary. 
 
 
 \begin{equation}
-Loss_{tt} = -\sum_{j=1}^{M} (y_{tt-context}^{j} \times log(\hat{y}_{tt-context}^{j}))\label{equ:losstt}
+\mathit{Loss}_{\mathit{TT}} = -\sum_{j=1}^{M} (y_{\mathit{TTcontext}}^{j} \times \log(\hat{y}_{\mathit{TTcontext}}^{j}))\label{equ:losstt}
 \end{equation}
 
-Equation\ref{equ:losstt} illustrates the formula of $Loss_{tt}$ calculation which also a $log$ loss function. 
-$\hat{y}_{tt-context}$ is the terminal output of our model. and $y_{tt-context}$ is the ground truth label of the terminal context.
+Equation~(\ref{equ:losstt}) illustrates the formula of $\mathit{Loss}_{\mathit{TT}}$ calculation which also a logarithmic loss function. 
+$\hat{y}_{\mathit{TTcontext}}$ is the terminal output of our model. and $y_{\mathit{TTcontext}}$ is the ground truth label of the terminal context.
 $M$ is the size of terminal vocabulary.
 
 \begin{equation}
-Loss_{total} = \alpha * Loss_{nt} + (1-\alpha) \times Loss_{tt}\label{equ:totalloss}
+\mathit{Loss}_{\mathit{total}} = \alpha  \mathit{Loss}_{\mathit{NT}} + (1-\alpha)  \mathit{Loss}_{\mathit{TT}}\label{equ:totalloss}
 \end{equation}
 
-Equation\ref{equ:totalloss} is the joint loss function combining $Loss_{nt}$ and $Loss_{tt}$. 
-We utilize a hyperparameter $\alpha$ whose range is from zero to one to adjust the importance between the loss of non-terminal context output $Loss_{nt}$ and terminal context output $Loss_{tt}$.
+Equation~(\ref{equ:totalloss}) is the joint loss function combining $\mathit{Loss}_{\mathit{NT}}$ and $\mathit{Loss}_{\mathit{TT}}$. 
+We utilize a hyperparameter $\alpha$ whose range is from zero to one to adjust the importance between the loss of non-terminal context output $\mathit{Loss}_{\mathit{NT}}$ and terminal context output $\mathit{Loss}_{\mathit{TT}}$.
 
 
 
@@ -302,7 +300,7 @@ The input layer is a combination layer of the representation vectors of feeding 
 The input is a sequence of training samples and one sample has four elements: $(N_{i}, T_{i}, NL_{i}, RL_{i})$ where $N_{i}$ is a non-terminal, $T_{i}$ is a terminal, $NL_{i}$ is the type information of $N_{i}$ and $RL_{i}$ is the side information of $N_{i}$. All these four elements are encoded by one-hot encoding and multiply embedding matrices as below:
 
 \begin{equation}
-Input_{i} = Concat(A\cdot N_{i} + B\cdot T_{i}, \quad C\cdot NL_{i} + D\cdot RL_{i})\label{equ:input}
+\mathit{Input}_{i} = \mathit{Concat}(A\cdot N_{i} + B\cdot T_{i}, \quad C\cdot NL_{i} + D\cdot RL_{i})\label{equ:input}
 \end{equation}
 
 where $A, B$ are the embedding matrices for non-terminals, terminals and initialized by embedding vectors generated by ASTToken2Vec. $A$ is a $K \times V_{N} $ matrix and the shape of matrix $B$ is $K \times V_{T}$. $K$ is the length of embedding vectors. 
@@ -325,7 +323,7 @@ next non-terminal $N_{i+1}$, next terminal $T_{i+1}$, type and side information 
 The formula of output layer is as below:
 
 \begin{equation}
-P_{i} = softmax(W \times h_{i} + b)
+P_{i} = \mathit{softmax}(W \times h_{i} + b)
 \end{equation}
 
 
@@ -348,7 +346,7 @@ There are 100,000 ASTs as training dataset and 50,000 ASTs as evaluation dataset
 There are 44 different kinds of non-terminal tokens specified by the JavaScript programming language grammar. 
 Base on these 44 non-terminals, we add two more bits of information: whether the non-terminal token has a child token; whether this non-terminal has a right sibling or not. 
 These two bits care more about the surrounding context of non-terminals and make the task of non-terminal predict become more challenge. 
-This adjunction is also used in the previous work\cite{liu2016neural}\cite{dataset}. 
+This adjunction is also used in the previous work \cite{liu2016neural}\cite{dataset}. 
 There are 98 kinds of bits-information combination non-terminal tokens in total as the elements in the non-terminal vocabulary including the special non-terminal token:\textit{NT-EMPTY} we use as a padding token to build a complete binary tree from an AST.
 
 \subsubsection{Terminal Vocabulary} 
