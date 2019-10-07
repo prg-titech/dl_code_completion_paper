@@ -61,7 +61,7 @@ Traditional code completion systems make limited use of context information.  Fo
 
 % deep learning models, the reason we can apply dl model to code completion
 Deep learning-based code completion, which is actively studied in the last few years \cite{liu2016neural,dataset,raychev2014code,white2015toward}, takes a different approach to exploit context information as well as knowledge of the programming language and APIs.  
-It uses a neural network model, more specifically, a recurrent deep neural network (RNN) that takes a sequence of program tokens and predicts the next token.  It can be understood as an application of the RNN-based sentence generation for natural lnaguages.%RNNs are known to be successful in the domain of natural language texts. 
+It uses a neural network model, more specifically, a recurrent deep neural network (RNN) that takes a sequence of program tokens and predicts the next token.  It can be understood as an application of the RNN-based sentence generation for natural languages.%RNNs are known to be successful in the domain of natural language texts. 
 
 When applying an RNN to programming languages, structural information in program texts matters to prediction, while typical RNN-based systems for natural languages  treat a text merely as a sequence of words.  There are several attempts to incorporate structural information in programs into RNN-based neural networks \cite{bielik2016phog,liu2016neural,raychev2016probabilistic}.  They basically encode an abstract syntax tree into a sequence of tokens with flags so that the sequence will have sufficient information to reconstruct the tree structure.
 
@@ -163,7 +163,7 @@ uses two identical networks for embedding non-terminal and terminal tokens.  It 
 \end{figure}
 ASTToken2Vec is a pair of four layers neural networks, each contains one input layer, one hidden layer, and two output layers as shown in Figure~\ref{fig:node2vec-structure}.  Two identical, yet independent networks are for embedding non-terminal and terminal nodes, respectively.  We hereafter call the networks NT2V and TT2V, respectively.
 
-The input layer uses the one-hot encoding representation, where $i$'th token in a vocabulary of $V$ different tokens is represented as an $V$-dimensional vector all but $i$'th element is zero.  
+The input layer uses the one-hot encoding representation, where $i$'Th token in a vocabulary of $V$ different tokens is represented as an $V$-dimensional vector all but $i$'Th element is zero.  
 The two output layers represent the context of non-terminal and terminal nodes, each of which has the same vector size to the non-terminal/terminal input vectors.
 We use the values in the hidden layer as the embedding vector of the input values.  The size of the hidden layer, a hyperparameter $D$, is determined by heuristics.
 In the training phase, we calculate a joint loss function to update the model.
@@ -290,7 +290,7 @@ It contains one input layer, one LSTM layer, and an output layer.
 \begin{figure}[!ht]
 \centering
 \includegraphics[height=4cm, width=7.5cm]{pictures/lstm_structure.png}
-\caption{The architectrue of AT2V-LSTM model}
+\caption{The architecture of AT2V-LSTM model}
 \label{fig:nti2p_model_architecture}
 \end{figure}
 
@@ -448,7 +448,7 @@ AT2V-LSTM& 85.2 $\pm$ 0.2\% & 94.4 $\pm$ 0.2\% \\
 \subsubsection{Next Terminal Prediction} 
 Figure \ref{fig:valid_accuracy_for_terminal} illustrates the validation accuracy curve for next terminal token prediction during the training phase. 
 Orange curve represents our AT2V-LSTM integration model and the blue curve is the accuracy of the baseline LSTM model. 
-The evaluation accuracy for the terminal in the test phase is shown in Tabel\ref{table:terminal-evalution-accuracy}. 
+The evaluation accuracy for the terminal in the test phase is shown in Table\ref{table:terminal-evalution-accuracy}. 
 From both the evaluation result, we can find that the AT2V-LSTM integration model has a better performance with the predicting accuracy of 78.9\% than the baseline model 75.8\%. 
 
 
