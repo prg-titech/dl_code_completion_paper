@@ -334,43 +334,41 @@ The softmax function returns the possibility of the next tokens predicting.
 
 \section{Experiments}
 \label{section:experiment}
-\subsection{Dataset Details}
-The data we use for both the ASTToken2Vec embedding model training and AT2V-LSTM integration model training is from the same dataset which is a JavaScript AST dataset provided by Raychev et al.\  \cite{dataset}. 
-There are 100,000 ASTs as training dataset and 50,000 ASTs as evaluation dataset. 
+\subsection{Dataset}
+The dataset we used for both ASTToken2Vec and AT2V-LSTM  is the same one in the previous work~\cite{dataset}.  It consists of 150,000 JavaScript ASTs, each of which corresponds to one open-source program file.   We used 100,000 and 50,000 of them for training and evaluation, respectively.
 
 % 介绍nonterminal的数据集，并解释增加了两个新bit，扩展了nonterminal的种类
 \subsubsection{Non-terminal Vocabulary} 
 There are 44 different kinds of non-terminal tokens specified by the JavaScript programming language grammar. 
 Base on these 44 non-terminals, we add two more bits of information: whether the non-terminal token has a child token; whether this non-terminal has a right sibling or not. 
-These two bits care more about the surrounding context of non-terminals and make the task of non-terminal predict become more challenge. 
-This adjunction is also used in the previous work \cite{liu2016neural}\cite{dataset}. 
-There are 98 kinds of bits-information combination non-terminal tokens in total as the elements in the non-terminal vocabulary including the special non-terminal token:\textit{NT-EMPTY} we use as a padding token to build a complete binary tree from an AST.
+These two bits care more about the surrounding context of non-terminals and make the task of non-terminal prediction more challenging. 
+This adjunction is also used in the previous work \cite{liu2016neural,dataset}. 
+In total, there are 98 different tokens in the vocabulary including the special token, namely \textit{NT-EMPTY}, for representing the end of children nodes.% we use as a padding token to build a complete binary tree from an AST.
 
-\subsubsection{Terminal Vocabulary} 
-Theoretically, there are infinite kinds of terminal tokens may be included in programs.
-So, we use the idea of \textit{Word of Bag} to specify the terminal vocabulary. 
-Concretely, we sort all terminal tokens appearing in the training dataset by their frequencies of occurrence. 
-Then we choose the 50,000 most frequent terminal tokens as the vocabulary of the terminal. 
-For infrequent terminal tokens (out of our terminal vocabulary bag), we use a special terminal token \textit{UNK} to represent these terminals. 
-In total, we have 50,002 tokens in the vocabulary of the terminal including particular terminal \textit{UNK} and \textit{TT-EMPTY} which is used to represent a child terminal for a non-terminal who does not have a terminal child. 
+\subsubsection{Terminal Vocabulary}
+In order to deal with too many different terminal tokens, we keep top 50,000 most frequently occurred terminal tokens in the original ASTs while replacing the rest tokens with the special token \emph{UNK} (unknown).  
+% Theoretically, there are infinite kinds of terminal tokens may be included in programs.
+% So, we use the idea of \textit{Word of Bag} to specify the terminal vocabulary. 
+% Concretely, we sort all terminal tokens appearing in the training dataset by their frequencies of occurrence. 
+% Then we choose the 50,000 most frequent terminal tokens as the vocabulary of the terminal. 
+% For infrequent terminal tokens (out of our terminal vocabulary bag), we use a special terminal token \textit{UNK} to represent these terminals. 
+We have 50,002 tokens in the vocabulary after added another special token \textit{TT-EMPTY} for representing absence.
 
-
+% NOTE: Bag of words representation is a technique to represent a
+% multiset of words by summing up the 1-hot encoding word
+% representations.
 
 \subsection{Experiment of ASTToken2Vec}
 \subsubsection{Training details}
-We implement ASTToken2Vec models to generate embedding vectors for both non-terminals and terminals. We define the size of the hidden layer $D$ is equal to 1,000 so that the length of embedding vectors is 1,000. 
-We specify the adjuster $\alpha$ in the joint loss function as 0.6.
+We implement ASTToken2Vec models to generate embedding vectors for both non-terminals and terminals. We define the size of the hidden layer $D$ (i.e., the vector length of the embedded representation) as 1,000. 
+We specify the parameter $\alpha$ in the joint loss function as 0.6.
 We use the Adam optimization algorithm with the learning rate of 0.002 to train models. 
 The size of the training batch for ASTToken2Vec is $b=100$ and the training epoch is $e=10$.
 
 \subsubsection{Visualization}
 We visualize the representation vectors of several terminal tokens to show the performance of ASTToken2Vec.
-We first apply principal component analysis (PCA) algorithm to these vectors to reduce the dimension from 1000-d to 2-d. 
-Then we normalize the 2-d vectors with min-max normalization so that the entire range of values of elements is -2 to 2.
-
-We pick up several terminal tokens to visualize, the visualization is shown in Figure \ref{fig:node2vec_visualization}. 
-Terminal token \textit{Identifiers} are blue, \textit{LiteralNumbers} are represented by purple, \textit{Property} terminals are green token and red tokens are \textit{LiteralString} in the figure.
-
+We first apply principal component analysis (PCA) algorithm to these vectors to reduce the dimension from 1000 to 2. 
+Then we normalize the 2-d vectors with min-max normalization so that the entire range of values of elements is $-2$ to $2$.
 
 \begin{figure}[!ht]
 \centering
@@ -379,24 +377,39 @@ Terminal token \textit{Identifiers} are blue, \textit{LiteralNumbers} are repres
 \label{fig:node2vec_visualization}
 \end{figure}
 
-In the figure, there are several clusters like: ``literal string cluster'', ``property cluster'' which represent different types of terminals. 
-We also find that even tokens are the same type, if their meaning is different, they are still not in the same cluster. 
-For example, even the type of ``append'' and ``value'' are \textit{Property}, they are still far from each other because ``append'' is a property which can add some elements to a container in the most cases.
-However ``value'' usually is a member in a class without some operation functionality of a container. 
-Another example is ``length'' and ``userName''.
-Due to they have a different meaning, they are not in the same cluster even they are all \textit{Identifiers} 
+We examined distributions of several terminal tokens as shown in Figure~\ref{fig:node2vec_visualization} in order to see whether the embedding
+represents intuitive similarity.  In the figure, the names of tokens are written on the projected position of its vector representation.  The clusters of tokens near \texttt{length} (around the bottom left corner) and near \texttt{name} (around top left) are identifiers.  The numbers are clustering around the bottom right.  The two clusters at the top (i.e., around \texttt{value} and \texttt{push}) are properties, which appearing as a field name of an object.  The cluster at the bottom right (i.e., near \texttt{mouseDown}) are string literals\footnote{In JavaScript, field \texttt{f} of object \texttt{o} can be accessed by \texttt{o.f} as well as \texttt{o['f']}, some string literals are as important as field names.}.
+% Terminal token \textit{Identifiers} are blue, \textit{LiteralNumbers} are represented by purple, \textit{Property} terminals are green token and red tokens are \textit{LiteralString} in the figure.
+
+We can make the following observations.
+\begin{itemize}
+\item Different kind of terminal tokens (e.g., identifiers and property names) make different clusters.  This would mean that the embedding reflects the usage of tokens.
+\item Tokens that have similar meaning in the natural language are placed at the positions close to each other.  For example, \texttt{length}, \texttt{size}, \texttt{len} and \verb|_len| make one cluster.
+\item Similar to Word2Vec, the embedded representation would be compositional.
+  The positions of \texttt{mouseup}, \texttt{mousedown}, \texttt{keyup} and \texttt{keydown} suggest that their positions can be decomposed into the four vectors, namely ``mouse,'' ``key,'' ``up,'' and ``down.''
+\end{itemize}
+Though we here can only discuss based on intuitive similarity, we would conclude the result of the embedding is reasonable.
+
+% In the figure, there are several clusters like: ``literal string cluster'', ``property cluster'' which represent different types of terminals. 
+% We also find that even tokens are the same type, if their meaning is different, they are still not in the same cluster. 
+% For example, even the type of ``append'' and ``value'' are \textit{Property}, they are still far from each other because ``append'' is a property which can add some elements to a container in the most cases.
+% However ``value'' usually is a member in a class without some operation functionality of a container. 
+% Another example is ``length'' and ``userName''.
+% Due to they have a different meaning, they are not in the same cluster even they are all \textit{Identifiers} 
 
 % calculate similarity
-We also calculate the cosine similarity between these embedding vectors and the result meets our conclusion of visualization. 
+%We also calculate the cosine similarity between these embedding vectors and the result meets our conclusion of visualization. 
 % The most similar token to ``identifier length'' is ``identifier size'' with the similarity 0.927 and the second similar token is ``identifier len'' with the similarity 0.883. 
 
 
 
 \subsection{Experiment of AT2V-LSTM}
-\subsubsection{Training details}
-We implement two models for code completion: basic LSTM model and our AT2V-LSTM integration model to compare the predicting performance. 
+We next use the proposed embedding for code completion to see whether it can improve accuracy of prediction.
+
+\subsubsection{LSTM Training}
+We implemented and compared two code completion models, namely the baseline LSTM model and our AT2V-LSTM model.  The two models have the LSTM model yet use different representations of tokens.
 We use Adam optimization algorithm to train our model with base learning rate 0.0025 and it multiplies 0.9 every epoch as learning rate decay. 
-We clip the gradient which is more than 6 to 6 and less than -6 to -6 to avoid the gradient exploding problem.
+We clip the gradient which is more than 6 to 6 and less than $-6$ to $-6$ to avoid the gradient exploding problem.
 We specify the time sequence $s=50$ and the batch size is $b=100$, therefore, there are $s \times b = 5000$ training instances for one training batch. 
 We train two models $e=10$ epochs.
 
@@ -405,7 +418,7 @@ Valid accuracy curve of the next non-terminal token prediction during the traini
 The blue curve represents the validation accuracy of the basic LSTM model and the orange curve is our AT2V-LSTM integration model. 
 %The x-axis is the validation checkpoint among training step, there are four checkpoints for each training epoch. Due to we train our models 10 epochs totally in the experiment, there are 40 checkpoints to record the validation accuracy. 
 
-From the validation accuracy curves, we find the non-terminal prediction accuracy of AT2V-LSTM integration model is a little higher than the accuracy of the basic LSTM model. The evaluation result illustrated in the table\ref{table:non-terminal-evalution-accuracy} also shows that the accuracy of the integration model is 1.5\% higher than the basic baseline model. 
+From the validation accuracy curves, we find the non-terminal prediction accuracy of AT2V-LSTM integration model is a little higher than the accuracy of the basic LSTM model. The evaluation result illustrated in Table~\ref{table:non-terminal-evalution-accuracy} also shows that the accuracy of the integration model is 1.5\%-point better than the baseline model. 
 
 \begin{figure}[!ht]
 \centering
@@ -422,7 +435,7 @@ From the validation accuracy curves, we find the non-terminal prediction accurac
 \hline
 Models& Top 1 accuracy& Top 3 accuracy\\
 \hline
-Basic LSTM& 83.5 $\pm$ 0.2\% & 92.6 $\pm$ 0.2\% \\
+Baseline LSTM& 83.5 $\pm$ 0.2\% & 92.6 $\pm$ 0.2\% \\
 AT2V-LSTM& 85.2 $\pm$ 0.2\% & 94.4 $\pm$ 0.2\% \\
 \hline
 \end{tabular}
@@ -434,9 +447,9 @@ AT2V-LSTM& 85.2 $\pm$ 0.2\% & 94.4 $\pm$ 0.2\% \\
 
 \subsubsection{Next Terminal Prediction} 
 Figure \ref{fig:valid_accuracy_for_terminal} illustrates the validation accuracy curve for next terminal token prediction during the training phase. 
-Orange curve represents our AT2V-LSTM integration model and the blue curve is the accuracy of the basic LSTM model. 
+Orange curve represents our AT2V-LSTM integration model and the blue curve is the accuracy of the baseline LSTM model. 
 The evaluation accuracy for the terminal in the test phase is shown in Tabel\ref{table:terminal-evalution-accuracy}. 
-From both the evaluation result, we can find that the AT2V-LSTM integration model has a better performance with the predicting accuracy of 78.9\% than the basic baseline model 75.8\%. 
+From both the evaluation result, we can find that the AT2V-LSTM integration model has a better performance with the predicting accuracy of 78.9\% than the baseline model 75.8\%. 
 
 
 \begin{figure}[!ht]
@@ -453,7 +466,7 @@ From both the evaluation result, we can find that the AT2V-LSTM integration mode
 \hline
 Models& Top 1 accuracy& Top 3 accuracy\\
 \hline
-Basic LSTM& 75.8 $\pm$ 0.2\% & 87.7 $\pm$ 0.2\% \\
+Baseline LSTM& 75.8 $\pm$ 0.2\% & 87.7 $\pm$ 0.2\% \\
 AT2V-LSTM& 78.9 $\pm$ 0.2\% & 89.2 $\pm$ 0.2\% \\
 \hline
 \end{tabular}
@@ -462,8 +475,8 @@ AT2V-LSTM& 78.9 $\pm$ 0.2\% & 89.2 $\pm$ 0.2\% \\
 \end{table}
 
 
-\subsubsection{Next Token Information Prediction}
-The evaluation result of the type (non-leaf or leaf) and the side (right-child or left-child) is shown in the Table\ref{table:node-information-evaluation-accuracy}.
+\subsubsection{Next Token Type Prediction}
+The evaluation result of the type (non-leaf or leaf) and the side (right-child or left-child) is shown in  Table~\ref{table:node-information-evaluation-accuracy}.
 We can find that both two models achieve a good performance that the accuracy of type information is near to 97\% and side information is near to 95\%. 
 
 
@@ -473,7 +486,7 @@ We can find that both two models achieve a good performance that the accuracy of
 \hline
 Models& Type accuracy& Side accuracy\\
 \hline
-Basic LSTM& 97.6 $\pm$ 0.2\% & 94.8 $\pm$ 0.2\% \\
+Baseline LSTM& 97.6 $\pm$ 0.2\% & 94.8 $\pm$ 0.2\% \\
 AT2V-LSTM& 97.8 $\pm$ 0.2\% & 95.1 $\pm$ 0.2\% \\
 \hline
 \end{tabular}
@@ -481,32 +494,37 @@ AT2V-LSTM& 97.8 $\pm$ 0.2\% & 95.1 $\pm$ 0.2\% \\
 \label{table:node-information-evaluation-accuracy}
 \end{table}
 
-\subsubsection{Uncommon terminal repeation}
-We analyze the possible reasons that may cause our integration model to work better for some evaluation cases. 
+\subsubsection{Manual comparison}
+To understand the effect of embedding, we manually analyzed the cases where two models gave different answers.  Although this is not systematic comparison at all, some cases gave us potential strength of the ASTToken2Vec. %the possible reasons that may cause our integration model to work better for some evaluation cases. 
 
 \begin{figure}[!ht]
 \centering
 \includegraphics[height=8cm, width=7.4cm]{pictures/code_snippets_compare.png}
-\caption{Code snippets for prediction result analysis}
+\caption{A case where embedding gave different results}
 \label{fig:code_snippets_compare}
 \end{figure}
 
+The code snippet in Figure~\ref{fig:code_snippets_compare} is a test case where two models predicted different tokens.  The hole, shown as a light blue box in the code, is the token to predict.  The answer here was \texttt{pageY}, which was correctly predicted by ASTV-LSTM but not by the baseline model, which answered ``UNK.''  
 
-The code snippet in the figure\ref{fig:code_snippets_compare} is a test case and models predict what token should be filled in the hole.
-The expecting token is ``Property pageY''.
-The basic model predicts terminal ``UNK'' which means this model consider the token appearing in the hole is a quite uncommon terminal.
-However, our AT2V-LSTM model gives a correct prediction.
-From the programming habits and the statistic of the dataset, the ``property pageY'' is an uncommon terminal only appears in several files but repeats many times in one file. 
-Due to it is uncommon, the basic LSTM model is hard o ltearn enough informatnio and give an incorrect prediction.
-On the contrary, the AT2V-LSTM integration model can leverage the semantic information of ``pageY'' extracted by the ASTToken2Vec embedding and give a correct prediction.
+One possible explanations for the difference is that the number of examples that use \texttt{pageX} and \texttt{pageY}.  As we can intuitively imagine those two tokens are not as common as \texttt{length} or \texttt{key}.  This would mean, even if the training dataset has code with \texttt{pageX} and \texttt{pageY}, it probably does not have the code that uses them in the same way (i.e., as a pair of field accesses in an array construction).  Therefore, it would be reasonable for the baseline model to answer ``UNK.'' 
+
+With ASTToken2Vec, it would be possible to learn that \texttt{pageX} and \texttt{pageY} appear as field names of an event.  Then they would probably have vector representations that are close to other field names of events.  Then, if there were code fragments in the training dataset that construct an array of two field values of an event, that knowledge can be applied to \texttt{pageX} and \texttt{pageY} thanks to similarity.
+
+%  what token should be filled in the hole.
+% The expecting token is ``Property pageY''.
+% The basic model predicts terminal ``UNK'' which means this model consider the token appearing in the hole is a quite uncommon terminal.
+% However, our AT2V-LSTM model gives a correct prediction.
+% From the programming habits and the statistic of the dataset, the ``property pageY'' is an uncommon terminal only appears in several files but repeats many times in one file. 
+% Due to it is uncommon, the basic LSTM model is hard o ltearn enough informatnio and give an incorrect prediction.
+% On the contrary, the AT2V-LSTM integration model can leverage the semantic information of ``pageY'' extracted by the ASTToken2Vec embedding and give a correct prediction.
 
 
 
 \section{Conclusion}
-In this paper, we propose an embedding method for AST nodes called ASTToken2Vec. 
-We integrate it with a basic LSTM model to build an integration model called AT2V-LSTM.
-From the results of our experiments, we conclude that the ASTToken2Vec model is able to generate the semantic-based embedding representation vectors for tokens.
-These embedding vectors enable our AT2V-LSTM integration model to leverage more semantic knowledge hidden behind ASTs and to complete code with a higher possibility of predicting next tokens correctly. 
+We proposed an embedding method for AST nodes called ASTToken2Vec. 
+We integrated the method with an LSTM model for code completion, which we call AT2V-LSTM.
+From the experiments, we manually observed that ASTToken2Vec produces embedding that reflect intuitive similarities of token names and roles.
+The application of ASTToken2Vec to the LSTM code completion exhibited slight improvements in prediction accuracy. %These embedding vectors enable our AT2V-LSTM integration model to leverage more semantic knowledge hidden behind ASTs and to complete code with a higher possibility of predicting next tokens correctly. 
 % We also extend the way to convert ASTs to sequences in the previous work with two more bits of information so that it is much easier to reconstruct a predicting AST from the sequence.
 
 
