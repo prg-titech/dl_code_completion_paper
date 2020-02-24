@@ -40,7 +40,7 @@ Code completion systems help the programmers to write code more efficiently and 
 
 
 
-\section{Introduction}
+\section{Introduction}\label{sec:introduction}
 % what is code completion system, why it is useful.
 Code completion is a feature of programming editors that suggests code fragments that are likely to be typed in by the programmer following to the program text just before the cursor position.  It helps the programmer to write code more quickly, to remember rarely used API names, and to reduce typographical errors.
 
@@ -518,7 +518,11 @@ With ASTToken2Vec, it would be possible to learn that \texttt{pageX} and \texttt
 % Due to it is uncommon, the basic LSTM model is hard o ltearn enough informatnio and give an incorrect prediction.
 % On the contrary, the AT2V-LSTM integration model can leverage the semantic information of ``pageY'' extracted by the ASTToken2Vec embedding and give a correct prediction.
 
+\section{Related Work}
 
+Besides the techniques mentioned in Section~\ref{sec:introduction}, a technique that also investigates an embedding method for programs.
+
+Alon et al.~proposed a method called code2vec~\cite{alon2019popl}.  While it is also an embedding method for program texts, it differs from ASTToken2Vec in the domain of embedding and the application.  Code2vec embeds a code snippet (i.e., a function body consisting of a few lines of code) into a vector representation whereas ASTToken2Vec embeds one AST token.  The application of code2vec is semantic labeling of code snippets, e.g., given a body of a reverse function, it will give a label ``reverse array.''  At the conceptual level, both methods pay attention to context information of program tokens.  Code2vec represents a code snippet as pairs of the tokens with a path, where the path is a sequence of intermediate AST nodes between the two tokens~\cite{alon2018pldi}.  ASTToken2Vec's model is an encoder between a token and its context, where the context includes ancestor AST nodes of the token, which can be considered as a half of the path information in code2vec.  
 
 \section{Conclusion}
 We proposed an embedding method for AST nodes called ASTToken2Vec. 
